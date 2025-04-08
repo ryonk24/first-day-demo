@@ -21,3 +21,26 @@ workflows:
     jobs:
       - start-server
       # TODO: Add a new job to run the component tests
+
+      - cypress/run:
+          name: Run Cypress Tests
+          requires:
+            - start-server
+          install command: npm install
+          filters:
+            branches:
+              only: master
+          steps:
+            - checkout
+            - run:
+                name: Install dependencies
+                command: npm install
+            - run:
+                name: Run Cypress tests
+                command: npm run test:cypress
+            - run:
+                name: Run Cypress component tests
+                command: npm run test:cypress:component
+            - run:
+                name: Run Cypress E2E tests
+                command: npm run test:cypress:e2e
